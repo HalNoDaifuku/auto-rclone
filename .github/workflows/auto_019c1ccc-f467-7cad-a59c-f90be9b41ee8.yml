@@ -1,0 +1,23 @@
+name: 019c1ccc-f467-7cad-a59c-f90be9b41ee8
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * 0"
+
+jobs:
+  rclone:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    steps:
+      - name: Setup Rclone
+        uses: AnimMouse/setup-rclone@v1
+        with:
+          rclone_config: ${{ secrets.RCLONE_CONFIG }}
+
+      - name: Current Time
+        run: TZ=JST-9 date "+%Y-%m-%d-%H-%M-%S"
+
+      # - name: Rclone Copy
+      #   run: rclone copy ${{ secrets.AUTO_019C1CCC_F467_7CAD_A59C_F90BE9B41EE8_SOURCEPATH }} ${{ secrets.AUTO_019C1CCC_F467_7CAD_A59C_F90BE9B41EE8_DESTPATH }}
