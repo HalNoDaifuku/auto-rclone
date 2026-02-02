@@ -8,7 +8,7 @@ on:
 jobs:
   rclone:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 5
 
     steps:
       - name: Setup Rclone
@@ -19,8 +19,14 @@ jobs:
       - name: Current Time
         run: sh -c 'echo -n CURRENT_TIME=; TZ=JST-9 date "+%Y-%m-%d-%H-%M-%S"' >> $GITHUB_ENV
 
-      - name: echo time
-        run: echo $CURRENT_TIME
+      - name: Rclone Copy
+        id: rclone_copy
+        continue-on-error: true
+        run: rclone -v --log-file "${{ github.workflow }}-${{ env.CURRENT_TIME }}.log" copy ${{ secrets.AUTO_019C1CCC_F467_7CAD_A59C_F90BE9B41EE8_SOURCEPATH }} ${{ secrets.AUTO_019C1CCC_F467_7CAD_A59C_F90BE9B41EE8_DESTPATH }}
 
-      # - name: Rclone Copy
-      #   run: rclone copy ${{ secrets.AUTO_019C1CCC_F467_7CAD_A59C_F90BE9B41EE8_SOURCEPATH }} ${{ secrets.AUTO_019C1CCC_F467_7CAD_A59C_F90BE9B41EE8_DESTPATH }}
+      - name: Upload Log to Discord
+        run: curl -X POST -H 'Content-Type:multipart/form-data' -F "file=@${{ github.workflow }}-${{ env.CURRENT_TIME }}.log" ${{ secrets.DISCORD_WEBHOOK_URL }}
+
+      - name: Error Handling
+        if: ${{ steps.rclone_copy.outcome == 'failure' }}
+        run: exit 1
