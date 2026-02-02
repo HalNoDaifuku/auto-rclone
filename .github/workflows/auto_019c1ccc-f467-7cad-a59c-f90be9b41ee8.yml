@@ -17,7 +17,10 @@ jobs:
           rclone_config: ${{ secrets.RCLONE_CONFIG }}
 
       - name: Current Time
-        run: echo 'TIME='TZ=JST-9 date "+%Y-%m-%d-%H-%M-%S"''
+        run: echo -n 'CURRENT_TIME='; TZ=JST-9 date "+%Y-%m-%d-%H-%M-%S" >> $GITHUB_ENV
+
+      - name: echo time
+        run: echo $CURRENT_TIME
 
       # - name: Rclone Copy
       #   run: rclone copy ${{ secrets.AUTO_019C1CCC_F467_7CAD_A59C_F90BE9B41EE8_SOURCEPATH }} ${{ secrets.AUTO_019C1CCC_F467_7CAD_A59C_F90BE9B41EE8_DESTPATH }}
