@@ -16,16 +16,20 @@ jobs:
         with:
           rclone_config: ${{ secrets.RCLONE_CONFIG }}
 
-      - name: Current Time
-        run: sh -c 'echo -n CURRENT_TIME=; TZ=JST-9 date "+%Y_%m_%d_%H_%M_%S"' >> $GITHUB_ENV
+      - name: Start Time
+        run: sh -c 'echo -n START_TIME=; TZ=JST-9 date "+%Y_%m_%d_%H_%M_%S"' >> $GITHUB_ENV
 
       - name: Rclone Copy
         id: rclone_copy
         continue-on-error: true
-        run: rclone -v --log-file "${{ github.workflow }}-${{ env.CURRENT_TIME }}.log" copy ${{ secrets.AUTO_019C1CCC_F467_7CAD_A59C_F90BE9B41EE8_SOURCEPATH }} ${{ secrets.AUTO_019C1CCC_F467_7CAD_A59C_F90BE9B41EE8_DESTPATH }}/${{ env.CURRENT_TIME }}
+        run: rclone -v --log-file "${{ github.workflow }}-${{ env.START_TIME }}.log" copy ${{ secrets.AUTO_019C1CCC_F467_7CAD_A59C_F90BE9B41EE8_SOURCEPATH }} ${{ secrets.AUTO_019C1CCC_F467_7CAD_A59C_F90BE9B41EE8_DESTPATH }}/${{ env.START_TIME }}
 
+      - name: End Time
+        run: sh -c 'echo -n END_TIME=; TZ=JST-9 date "+%Y_%m_%d_%H_%M_%S"' >> $GITHUB_ENV
       - name: Upload Log to Discord
-        run: curl -X POST -H 'Content-Type:multipart/form-data' -F "file=@${{ github.workflow }}-${{ env.CURRENT_TIME }}.log" ${{ secrets.DISCORD_WEBHOOK_URL }} > /dev/null
+        run: |
+          curl -X POST -H 'Content-Type:application/json' -d '{"embeds":[{"title":"${{github.workflow}}","description":"アップロード開始時刻：${{env.START_TIME}}\nアップロード完了時刻：${{env.END_TIME}}","color":5793266,"url":"${{github.server_url}}/${{github.repository}}/actions/runs/${{github.run_id}}"}]}' ${{ secrets.DISCORD_WEBHOOK_URL }} > /dev/null
+          curl -X POST -H 'Content-Type:multipart/form-data' -F "file=@${{ github.workflow }}-${{ env.START_TIME }}.log" ${{ secrets.DISCORD_WEBHOOK_URL }} > /dev/null
 
       - name: Error Handling
         if: ${{ steps.rclone_copy.outcome == 'failure' }}
