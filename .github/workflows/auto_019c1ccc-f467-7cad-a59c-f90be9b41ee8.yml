@@ -44,13 +44,14 @@ jobs:
     if: cancelled()
     runs-on: ubuntu-latest
     steps:
-      - env:
-          START_TIME: ${{ needs.rclone.outputs.START_TIME }}
-
       - name: Setup Rclone
         uses: AnimMouse/setup-rclone@v1
         with:
           rclone_config: ${{ secrets.RCLONE_CONFIG }}
+
+      - env:
+          START_TIME: ${{ needs.rclone.outputs.START_TIME }}
+        run: echo "START_TIME=${START_TIME}" >> $GITHUB_ENV
 
       - name: Rclone Copy
         id: rclone_copy
