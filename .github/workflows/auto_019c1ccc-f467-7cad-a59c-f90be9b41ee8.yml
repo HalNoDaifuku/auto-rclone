@@ -8,7 +8,6 @@ on:
 jobs:
   rclone:
     runs-on: ubuntu-latest
-    timeout-minutes: 350
     outputs:
       start_time: ${{ steps.start_time.outputs.START_TIME }}
     steps:
@@ -26,6 +25,7 @@ jobs:
 
       - name: Rclone Copy
         id: rclone_copy
+        timeout-minutes: 350
         continue-on-error: true
         run: rclone -v --log-file "${{ github.workflow }}-${{ env.START_TIME }}.log" copy ${{ secrets.AUTO_019C1CCC_F467_7CAD_A59C_F90BE9B41EE8_SOURCEPATH }} ${{ secrets.AUTO_019C1CCC_F467_7CAD_A59C_F90BE9B41EE8_DESTPATH }}/${{ env.START_TIME }}
 
@@ -42,9 +42,8 @@ jobs:
 
   rclone_2:
     needs: rclone
-    if: cancelled()
+    if: failure()
     runs-on: ubuntu-latest
-    timeout-minutes: 350
     steps:
       - name: Setup Rclone
         uses: AnimMouse/setup-rclone@v1
@@ -57,6 +56,7 @@ jobs:
 
       - name: Rclone Copy
         id: rclone_copy
+        timeout-minutes: 350
         continue-on-error: true
         run: rclone -v --log-file "${{ github.workflow }}-${{ env.START_TIME }}.log" copy ${{ secrets.AUTO_019C1CCC_F467_7CAD_A59C_F90BE9B41EE8_SOURCEPATH }} ${{ secrets.AUTO_019C1CCC_F467_7CAD_A59C_F90BE9B41EE8_DESTPATH }}/${{ env.START_TIME }}
 
