@@ -8,6 +8,7 @@ on:
 jobs:
   rclone:
     runs-on: ubuntu-latest
+    timeout-minutes: 350
     outputs:
       start_time: ${{ steps.start_time.outputs.START_TIME }}
     steps:
@@ -43,6 +44,7 @@ jobs:
     needs: rclone
     if: cancelled()
     runs-on: ubuntu-latest
+    timeout-minutes: 350
     steps:
       - name: Setup Rclone
         uses: AnimMouse/setup-rclone@v1
