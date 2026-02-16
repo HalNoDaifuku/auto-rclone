@@ -44,6 +44,10 @@ jobs:
     needs: rclone
     if: failure()
     runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 1
+      matrix:
+        retry: [1, 2, 3]
     steps:
       - name: Setup Rclone
         uses: AnimMouse/setup-rclone@v1
