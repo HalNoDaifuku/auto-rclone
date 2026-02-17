@@ -45,6 +45,7 @@ jobs:
     if: failure()
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       max-parallel: 1
       matrix:
         retry: [1, 2, 3]
