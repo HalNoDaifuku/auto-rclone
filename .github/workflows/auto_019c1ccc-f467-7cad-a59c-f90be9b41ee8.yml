@@ -40,7 +40,7 @@ jobs:
         if: ${{ steps.rclone_copy.outcome == 'failure' }}
         run: exit 1
 
-  rclone_2:
+  retry_rclone:
     needs: rclone
     if: failure()
     runs-on: ubuntu-latest
@@ -48,7 +48,7 @@ jobs:
       fail-fast: false
       max-parallel: 1
       matrix:
-        retry: [1, 2, 3]
+        retry: [1, 2, 3, 4, 5, 6]
     steps:
       - name: Setup Rclone
         uses: AnimMouse/setup-rclone@v1
