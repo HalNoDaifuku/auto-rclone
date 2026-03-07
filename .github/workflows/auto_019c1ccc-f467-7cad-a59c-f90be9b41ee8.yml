@@ -2,8 +2,8 @@ name: 019c1ccc-f467-7cad-a59c-f90be9b41ee8
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 19 * * 5'
+  # schedule:
+  #   - cron: '0 19 * * 5'
 
 jobs:
   rclone:
