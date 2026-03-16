@@ -25,7 +25,7 @@ jobs:
         id: rclone_copy
         timeout-minutes: 350
         continue-on-error: true
-        run: rclone -v --log-file "${{ github.workflow }}-${{ env.START_TIME }}.log" copy ${{ secrets.AUTO_019CF4DC_2FE2_7AC6_88F3_0E1E7334F39A_SOURCEPATH }} ${{ secrets.AUTO_019CF4DC_2FE2_7AC6_88F3_0E1E7334F39A_DESTPATH }}/${{ env.START_TIME }}
+        run: rclone -v --log-file "${{ github.workflow }}-${{ env.START_TIME }}.log" copy ${{ secrets.AUTO_019CF4DC_2FE2_7AC6_88F3_0E1E7334F39A_SOURCEPATH }} ${{ secrets.AUTO_019CF4DC_2FE2_7AC6_88F3_0E1E7334F39A_DESTPATH }}
 
       - name: End Time
         run: sh -c 'echo -n END_TIME=; TZ=JST-9 date "+%Y_%m_%d_%H_%M_%S"' >> $GITHUB_ENV
@@ -61,7 +61,7 @@ jobs:
         id: rclone_copy
         timeout-minutes: 350
         continue-on-error: true
-        run: rclone -v --log-file "${{ github.workflow }}-${{ env.START_TIME }}.log" copy ${{ secrets.AUTO_019CF4DC_2FE2_7AC6_88F3_0E1E7334F39A_SOURCEPATH }} ${{ secrets.AUTO_019CF4DC_2FE2_7AC6_88F3_0E1E7334F39A_DESTPATH }}/${{ env.START_TIME }}
+        run: rclone -v --log-file "${{ github.workflow }}-${{ env.START_TIME }}.log" copy ${{ secrets.AUTO_019CF4DC_2FE2_7AC6_88F3_0E1E7334F39A_SOURCEPATH }} ${{ secrets.AUTO_019CF4DC_2FE2_7AC6_88F3_0E1E7334F39A_DESTPATH }}
 
       - name: End Time
         run: sh -c 'echo -n END_TIME=; TZ=JST-9 date "+%Y_%m_%d_%H_%M_%S"' >> $GITHUB_ENV
